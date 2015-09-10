@@ -1,0 +1,26 @@
+### 
+# ATTENTION : FICHIER SOUS PUPPET
+###
+
+#   Etat des disques - partitions standards
+#   ---------------------
+
+check device racine with path /
+        if space usage > 80% for 5 cycles then alert
+        if inode usage > 50% then alert
+
+check device boot with path /boot
+        if space usage > 90% then alert
+        if inode usage > 50% then alert
+
+check device usr with path /usr
+        if space usage > 85% then alert
+        if inode usage > 50% then alert
+
+check device var with path /var
+        if space usage > 80% for 5 cycles then alert
+        if inode usage > 50% then alert
+
+check device varlog with path /var/log
+        if space usage > 80% for 10 cycles then alert
+        if inode usage > 50% then alert

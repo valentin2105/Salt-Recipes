@@ -1,0 +1,51 @@
+###############################################################################
+## Monit control file
+###############################################################################
+##
+## Comments begin with a '#' and extend through the end of the line. Keywords
+## are case insensitive. All path's MUST BE FULLY QUALIFIED, starting with '/'.
+##
+## Below you will find examples of some frequently used statements. For 
+## information about the control file and a complete list of statements and 
+## options, please have a look in the Monit manual.
+##
+##
+###############################################################################
+## Global section
+###############################################################################
+##
+## Start Monit in the background (run as a daemon):
+#
+  set daemon 120            # check services at 2-minute intervals
+  set logfile /var/log/monit.log
+  set idfile /var/lib/monit/id
+  set statefile /var/lib/monit/state
+
+  set httpd port 8080 and
+  allow monit:monit
+
+  set mailserver smtp.gmail.com port 587
+    username "sender@email.com" password "your-password"
+    using tlsv1
+    with timeout 30 seconds
+
+  set alert receiver@email.com not on { instance, action }
+  set eventqueue
+      basedir /var/lib/monit/events # set the base directory where events will be stored
+      slots 100                     # optionally limit the queue size
+
+ set mail-format {
+   from: sender@email.com 
+   subject: monit alert --  $EVENT $SERVICE
+   message: $EVENT Service $SERVICE
+                 Date:        $DATE
+                 Action:      $ACTION
+                 Host:        $HOST
+                 Description: $DESCRIPTION
+
+            Votre serviteur,
+            Monit
+ }
+
+   include /etc/monit/conf.d/*
+#
